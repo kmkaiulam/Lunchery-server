@@ -16,6 +16,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "reInstall": "rm -rf node_modules && rm -rf package-lock.json && npm install",
     "test": "mocha",
     "start": "node server.js"
   },
