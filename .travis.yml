@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services: 
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: KxI6ETAQthBVlp9sGZoRE0NScDZWZC2NdxPCo/9weKm9kjQquZ1MJKVndsREJh1RZNn7a/IsoG/tMUuY5FSQXDwp+JGd5hhHNQ8KtGRIpS9CkR6f5eeHhCNSmf0fSJPwaG+unnkZl1L6FdxxhLO7v38xw4K8SKcziR/6HRlxJ076Hc13BEKSpQVUthhqcPMVEscI7p8pOu2/lje071H7GHHGyGfr8buC+sBxcwlPAVeE4U6CcR2Jj5JgoroxP/F2PYRWADEGQnoBB6EBxQhFhxGEEu9ZKNw850nInQuy61NMagegRwhYhaqyLLOFg3cwOo8/ERF6o9VX2D6SeNT8E/pFfxvPngF/Izxk95hk1xlYsT2Q/heWJf2wgnyin169LS7++Rzq+cQlNIvQoq+gHQ+5gnj/j+ljW9OEeL5iwRbuCAS9pzzzsWV5f5kyoX7Sxuzz0G7Zq7+OovQGxI2/ys+VmyH/zDp7BKoCpjI6HDEjgBbt8Jrm3ZIjRd645i9MnVgK0Iy2WT58PVa5KqecYIUQ6ViT+Q1vGaKNvOtjo9yURJbsMWDcdc0zBZsNAZ++ephYb07aS4T8q08/st/pZCITR1cR+Xg4Vt1q1gQgpVKMUr51nWCXtVMTU9KeYseRWaQHqfNxosz7x/E/wYt44QKrU987EgWmuCbztv/oBGE=
+  app: bandaide-fullstack
+  on:
+    repo: kmlamthinkful/BandAide
