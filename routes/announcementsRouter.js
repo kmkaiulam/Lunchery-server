@@ -1,4 +1,4 @@
-'use strict';
+/* 'use strict';
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -105,4 +105,4 @@ router.delete('/:id', jwtAuth, checkValidUser, checkRequiredFields, (req,res) =>
         });
 });
            
-module.exports = {router};
+module.exports = {router}; */

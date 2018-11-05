@@ -3,7 +3,6 @@ require('dotenv').config();
 // --- MODULES ---
 const express = require('express');
 const app = express();
-const cookieParser = require('cookie-parser')
 const morgan = require('morgan');
 const mongoose = require('mongoose');
       mongoose.Promise = global.Promise;
@@ -16,7 +15,6 @@ app.use(express.static('public'));
 app.use(express.urlencoded(({
   extended: true
 })));
-app.use(cookieParser());
 
 // --- LOGGING ---
 app.use(morgan('common'));
@@ -29,16 +27,13 @@ const {authRouter, localStrategy, jwtStrategy } = require('./auth');
 // --- CONFIG ---
 const { PORT, DATABASE_URL } = require('./config');
 
-// --- ENDPOINTS ---
-app.use('/api/users/', usersRouter);
-app.use('/api/auth/', authRouter);
 
 
 // --- CORS ---
 app.use(function (req, res, next){
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   if (req.method === 'OPTIONS'){
     return res.send(204);
   }
@@ -47,6 +42,11 @@ app.use(function (req, res, next){
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
+
+
+// --- ENDPOINTS ---
+app.use('/api/users/', usersRouter);
+app.use('/api/auth/', authRouter);
 
 let server;
 

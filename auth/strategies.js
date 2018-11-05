@@ -47,5 +47,6 @@ const jwtStrategy = new JwtStrategy(
   }
 );
 
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
-module.exports = {localStrategy, jwtStrategy};
+module.exports = {localStrategy, jwtStrategy, jwtAuth};
