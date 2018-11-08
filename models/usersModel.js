@@ -68,22 +68,23 @@ const UserSchema = new Schema({
   chefProfile: { 
       displayName: {type: String, default: ''},
       company: {type: String, default: ''},
+      location: {type: String, default: ''},
       style: {type: String, default: ''},
       picture: {type: String, default: ''},
-      availability: [{
-        monday: {type: Boolean, default: false},
-        mondayLimit: {type: Number, default: 0},
-        tuesday: {type: Boolean, default: false},
-        tuesdayLimit: {type: Number, default: 0},
-        wednesday: {type: Boolean, default: false},
-        wednesdayLimit: {type:Number, default: 0},
-        thursday: {type: Boolean, default: false},
-        thursdayLimit: {type: Number, default: 0},
-        friday: {type: Boolean, default: false},
-        fridayLimit:{type: Number, default: 0}
-      }],
       signatureDish: {type: String, default: ''}
-  }
+  },
+  availability: {
+    monday: {type: Boolean, default: false},
+    mondayLimit: {type: Number, default: 0},
+    tuesday: {type: Boolean, default: false},
+    tuesdayLimit: {type: Number, default: 0},
+    wednesday: {type: Boolean, default: false},
+    wednesdayLimit: {type:Number, default: 0},
+    thursday: {type: Boolean, default: false},
+    thursdayLimit: {type: Number, default: 0},
+    friday: {type: Boolean, default: false},
+    fridayLimit:{type: Number, default: 0}
+  },
 });
 
 
@@ -98,7 +99,8 @@ UserSchema.methods.serialize = function(){
     lastName: this.lastName || '',
     chef: this.chef,
     workweek: this.workweek,
-    chefProfile: this.chefProfile
+    chefProfile: this.chefProfile,
+    availability: this.availability
   };
 };
 

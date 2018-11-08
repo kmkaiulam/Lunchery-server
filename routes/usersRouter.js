@@ -74,7 +74,7 @@ router.put('/:id', jwtAuth, (req, res) => {
   
   availabilityUpdate.forEach(field => {
     if (field in req.body.profile) {
-      toUpdate[`chefProfile.availability.${field}`] = req.body.profile[field]
+      toUpdate[`availability.${field}`] = req.body.profile[field]
     }
   })
   console.log('--------------------------');
