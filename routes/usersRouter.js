@@ -12,6 +12,19 @@ const {jwtAuth} = require('../auth');
 //     .catch(err => res.status(500).json({message: 'Internal server error'}));
 // });
 
+//chefs search route
+router.get('/chefs', jwtAuth, (req,res) => {
+  return User.find({'chef': true})
+    .then(chefs =>{
+      console.log(chefs)
+      res.json(chefs)
+    })
+    .catch(err =>{
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+})
+
 router.get('/:id', jwtAuth, (req,res) => {
   return User.findById(req.params.id)
     .then(user => res.json(user.serialize()))
@@ -21,7 +34,7 @@ router.get('/:id', jwtAuth, (req,res) => {
 
 // Post to register a new user
 router.post('/', checkUserRequiredFields, checkUserStringFields, checkUserTrimmedFields, checkUserSizedFields, (req, res) =>{
-  let {username, password, firstName = '', lastName = ''} = req.body;
+  let {username, password, chef, firstName = '', lastName = ''} = req.body;
   firstName = firstName.trim();
   lastName = lastName.trim();
   
@@ -43,7 +56,8 @@ router.post('/', checkUserRequiredFields, checkUserStringFields, checkUserTrimme
         username,
         password: hash,
         firstName,
-        lastName
+        lastName,
+        chef
       });
     })
     .then(user => {
@@ -61,26 +75,14 @@ router.post('/', checkUserRequiredFields, checkUserStringFields, checkUserTrimme
 // Profile Update
 router.put('/:id', jwtAuth, (req, res) => {
   let id= req.params.id;
-  console.log(id);
   let toUpdate = {};
-  const availabilityUpdate = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'mondayLimit', 'tuesdayLimit', 'wednesdayLimit', 'thursdayLimit', 'fridayLimit']  
-  const updateableFields = ['displayName', 'company', 'style', 'picture', 'signatureDish']
+  const updateableFields = ['displayName', 'company', 'location', 'style', 'picture', 'bio']
   
   updateableFields.forEach(field => {
     if (field in req.body.profile) {
       toUpdate[`chefProfile.${field}`] = req.body.profile[field];
     }
   })
-  
-  availabilityUpdate.forEach(field => {
-    if (field in req.body.profile) {
-      toUpdate[`availability.${field}`] = req.body.profile[field]
-    }
-  })
-  console.log('--------------------------');
-  console.log(toUpdate);
-  console.log(req.body);
-  console.log('--------------------------');
   User.findByIdAndUpdate(id, {$set: toUpdate}, {new:true})
   .then(user => {
     console.log(user.serialize());

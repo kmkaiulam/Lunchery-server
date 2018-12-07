@@ -1,3 +1,4 @@
 'use strict';
 const {User} = require('./usersModel');
-module.exports = {User};
+const {Group} = require('./groupsModel')
+module.exports = {User, Group};

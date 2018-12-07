@@ -22,6 +22,7 @@ app.use(morgan('common'));
 
 // --- IMPORTS ---
 const {usersRouter} = require('./routes');
+const {groupsRouter} = require('./routes');
 const {authRouter, localStrategy, jwtStrategy } = require('./auth');
 
 // --- CONFIG ---
@@ -47,6 +48,7 @@ passport.use(jwtStrategy);
 // --- ENDPOINTS ---
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
+app.use('/api/groups/', groupsRouter);
 
 let server;
 
