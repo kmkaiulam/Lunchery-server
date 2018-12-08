@@ -6,9 +6,17 @@ const router = express.Router();
 const {jwtAuth} = require('../auth');
 
 
-//Groups Search Route
+//GROUPS SEARCH
 router.get('/', (req,res) => {
     return Group.find()
+    .populate({
+            path: 'createdBy', 
+            select: 'chefProfile' 
+    })
+    .populate({
+        path: 'members', 
+        select: 'username _id' 
+    })
       .then(groups =>{
         console.log(groups)
         res.json(groups)
@@ -19,9 +27,7 @@ router.get('/', (req,res) => {
       });
   })
 
-//how do i have access to the user id from here?
-//how do I send the user Id, and put it in the createdBy section?
-//retreiving the information for group (chef name, companyName and location is from populating (post doesn't matter))
+//CREATE A GROUP
 router.post('/', jwtAuth, (req,res) => {
   let {lunchDate, lunchLocation, menu, cost, seatLimit, members} = req.body;
   console.log(lunchDate)
@@ -44,7 +50,9 @@ router.post('/', jwtAuth, (req,res) => {
     res.status(500).json({code: 500, message: 'Internal server error'})  
     });
 });
-      
+
+
+//EDIT GROUP
 router.put('/:id', jwtAuth, (req, res) => {
     let id= req.params.id;;
     let toUpdate= {};
@@ -66,6 +74,7 @@ router.put('/:id', jwtAuth, (req, res) => {
     })
 });
 
+//DELETE GROUP
 router.delete('/:id', jwtAuth, (req, res) => {
     console.log(`Deleting Group \`${req.params.id}\``)
     Group
@@ -79,4 +88,43 @@ router.delete('/:id', jwtAuth, (req, res) => {
         });
 });
   
+//JOIN A GROUP
+router.post('/members/:id', jwtAuth, (req,res) => {
+    Group
+    .findByIdAndUpdate(req.params.id, 
+        {$push: {members:req.user.id}},
+        {new: true}
+    )
+    .populate({
+        path: 'members', 
+        select: 'username _id' 
+    })
+    .then(newGroup => {
+        console.log(newGroup)
+        res.status(201).json(newGroup)
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' }
+        );
+    });
+})
+
+//EXIT A GROUP-- not sure if this one works - should test it
+router.delete('/members/:id', jwtAuth, (req,res) => {
+    Group
+        .findByIdAndUpdate(req.params.id,
+            {$pull: {members: req.user.id}},
+            {new:true}
+        )
+        .then(members => {
+            console.log(members)
+            res.status(204).end();
+        }) 
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ message: 'Internal server error' });
+        });
+});
+
 module.exports = {router};

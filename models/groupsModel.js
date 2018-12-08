@@ -5,7 +5,6 @@ const ObjectId = Schema.Types.ObjectId;
 mongoose.Promise = global.Promise;
 
 
-
 const GroupSchema = new Schema ({
   createdBy: {type: ObjectId, ref:'User'},
   lunchDate: {type:Date, required: true},
@@ -13,9 +12,8 @@ const GroupSchema = new Schema ({
   menu: { type: String, required: true},
   cost: {type: Number, required: true},
   seatLimit: {type: Number, required:true},
-  members: {type: Array, default: []}
+  members: [{type: ObjectId, ref:'User'}],
 })
-
 
 
 const Group = mongoose.model('Group', GroupSchema);

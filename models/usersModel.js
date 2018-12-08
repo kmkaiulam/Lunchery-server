@@ -37,6 +37,7 @@ const UserSchema = new Schema({
         //Would require 2 asynchronous calls being done when submitting the information to manipulate User and Group with different information
         //Only Requires 2 asynchronous calls for Deletion, not PUT since it USER object refers to GROUP  
         // array of Object Ids?
+        //BEST TO REMOVE MY GROUPS ENTIRELY JUST DO ASYNC CALL TO GROUPS THAT ARE ASSOCIATED WITH YOUR USER ID
   myGroups: [{
     type: ObjectId, ref: 'Group',
   }],
