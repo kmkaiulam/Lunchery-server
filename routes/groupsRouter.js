@@ -1,13 +1,19 @@
 // --- MODULES ---
 const express = require('express');
+
 // --- IMPORTS ---
 const {Group} = require('../models');
 const router = express.Router();
 const {jwtAuth} = require('../auth');
 
+//remove all entries past current date by more than 7 days
+ function Cleanup(){
+   return  Group.remove({lunchDate: {$lte: Date.now()-8.64e+7 }}).exec()
+ } 
 
 //GROUPS SEARCH
 router.get('/', (req,res) => {
+    Cleanup()
     return Group.find()
     .populate({
             path: 'createdBy', 
@@ -17,6 +23,7 @@ router.get('/', (req,res) => {
         path: 'members', 
         select: 'username _id' 
     })
+   
       .then(groups =>{
         console.log(groups)
         res.json(groups)
@@ -26,16 +33,18 @@ router.get('/', (req,res) => {
         res.status(500).json({ message: 'Internal server error' });
       });
   })
+  
 
 //CREATE A GROUP
 router.post('/', jwtAuth, (req,res) => {
-  let {lunchDate, lunchLocation, menu, cost, seatLimit, members} = req.body;
+  let {lunchDate, lunchLocation, lunchTime, menu, cost, seatLimit, members} = req.body;
   console.log(lunchDate)
   console.log(req.user);
     return Group.create({
        createdBy: req.user.id,
        lunchDate,
        lunchLocation,
+       lunchTime,
        menu,
        cost,
        seatLimit,
@@ -56,11 +65,11 @@ router.post('/', jwtAuth, (req,res) => {
 router.put('/:id', jwtAuth, (req, res) => {
     let id= req.params.id;;
     let toUpdate= {};
-    const updateableFields = ['lunchDate', 'lunchLocation', 'menu', 'cost', 'seatLimit']
+    const updateableFields = ['lunchDate', 'lunchLocation', 'lunchTime', 'menu', 'cost', 'seatLimit']
 
     updateableFields.forEach(field => {
-        if (field in req.body.group) {
-            toUpdate[field]= req.body.group[field]
+        if (field in req.body) {
+            toUpdate[field]= req.body[field]
         }
     })
     Group.findByIdAndUpdate(id, {$set:toUpdate}, {new:true})
@@ -110,7 +119,7 @@ router.post('/members/:id', jwtAuth, (req,res) => {
     });
 })
 
-//EXIT A GROUP-- not sure if this one works - should test it
+//LEAVE A GROUP-- not sure if this one works - should test it
 router.delete('/members/:id', jwtAuth, (req,res) => {
     Group
         .findByIdAndUpdate(req.params.id,
