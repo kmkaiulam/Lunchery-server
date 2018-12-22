@@ -63,7 +63,7 @@ router.post('/', checkUserRequiredFields, checkUserStringFields, checkUserTrimme
 router.put('/:id', jwtAuth, (req, res) => {
   let id= req.params.id;
   let toUpdate = {};
-  const updateableFields = ['displayName', 'company', 'location', 'style', 'picture', 'bio']
+  const updateableFields = ['displayName', 'company', 'location', 'style', 'bio']
   
   updateableFields.forEach(field => {
     if (field in req.body.profile) {
@@ -82,8 +82,8 @@ router.put('/:id', jwtAuth, (req, res) => {
 });
 
 //Profile Image Update                      profileImgUpload.single('profileImage)
-router.put('/profileImage/:id', jwtAuth, uploader.profileImage, ( req, res ) => {
-  const userId = req.user.id;
+router.put('/profileImage/:id', jwtAuth, uploader.profileImage, (req, res ) => {
+  const userId = req.user.id
   return User.findById(userId)
   .then(user => {
     let profileImageLink = user.chefProfile.profileImage;
@@ -101,10 +101,8 @@ router.put('/profileImage/:id', jwtAuth, uploader.profileImage, ( req, res ) => 
       Bucket: myBucket, 
       Key: profileImageLink
     };
-    console.log(req.file)
-    console.log(req.file.key)
-    console.log(params.Key)
-    
+  
+
     return s3.deleteObject(params).promise()
     .then(function(data) {
       if (data) {

@@ -20,13 +20,13 @@ const s3= new AWS.S3({
       s3: s3,
       bucket: process.env.S3_BUCKET_NAME,
       acl: 'public-read',
+      contentType: multerS3.AUTO_CONTENT_TYPE,
       key: function (req, file, cb) {
         const ext = file.originalname.match(/\.\w*/g)[0];
         const uniqueId = shortid.generate();
        cb(null,'user-images/' + file.fieldname + '-' + uniqueId + ext);
       }
-     }),
-     limits:{ fileSize: 2000000 }, 
+     }), 
      fileFilter: function( req, file, cb ){
       checkFileType( file, cb );
      }
