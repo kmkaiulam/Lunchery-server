@@ -40,7 +40,7 @@ router.post('/', jwtAuth, (req,res) => {
   let {lunchDate, lunchLocation, lunchTime, menu, cost, seatLimit, members} = req.body;
   console.log(lunchDate)
   console.log(req.user);
-    return Group.create({
+     Group.create({
        createdBy: req.user.id,
        lunchDate,
        lunchLocation,
@@ -51,6 +51,13 @@ router.post('/', jwtAuth, (req,res) => {
        members,
     })
     .then(group => { 
+      return Group.findById(group._id)
+        .populate({
+            path: 'createdBy', 
+            select: 'chefProfile' 
+        }) 
+    })
+    .then(group => {
         console.log(group);
         return res.status(201).json(group);
     })

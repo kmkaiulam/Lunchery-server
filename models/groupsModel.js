@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 mongoose.Promise = global.Promise;
 
-//Include expiration date field  - to delete stale records under GET Request
+
 const GroupSchema = new Schema ({
   createdBy: {type: ObjectId, ref:'User'},
   lunchDate: {type:Date},
