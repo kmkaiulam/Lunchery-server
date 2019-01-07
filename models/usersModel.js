@@ -32,7 +32,7 @@ const UserSchema = new Schema({
       location: {type: String, default: ''},
       bio: {type: String, default: ''},
       style: {type: String, default: ''},
-      profileImage: {type: String, default: 'default-user-img.png'},  
+      profileImage: {type: String, default: 'user-images/profileImage-default-user-image.png'},  
   }
 });
 

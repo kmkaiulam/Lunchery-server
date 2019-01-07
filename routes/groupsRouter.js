@@ -10,10 +10,7 @@ const {jwtAuth} = require('../auth');
  function Cleanup(){
    return  Group.remove({lunchDate: {$lte: Date.now()-8.64e+7 }}).exec()
  } 
-
-//GROUPS SEARCH
-router.get('/', (req,res) => {
-    Cleanup()
+function PopulateGroup(){
     return Group.find()
     .populate({
             path: 'createdBy', 
@@ -22,8 +19,13 @@ router.get('/', (req,res) => {
     .populate({
         path: 'members', 
         select: 'username _id' 
-    })
-   
+    })    
+}
+
+//GROUPS SEARCH
+router.get('/', (req,res) => {
+    Cleanup()
+    PopulateGroup()
       .then(groups =>{
         console.log(groups)
         res.json(groups)
@@ -81,8 +83,11 @@ router.put('/:id', jwtAuth, (req, res) => {
     })
     Group.findByIdAndUpdate(id, {$set:toUpdate}, {new:true})
     .then(groupUpdate => {
-        console.log(groupUpdate);
-        res.status(200).json(groupUpdate)
+        PopulateGroup()
+        .then(updatedGroups => {
+            console.log(updatedGroups)
+            res.status(200).json(updatedGroups)
+        })
     })
     .catch(error => {
         console.log(error)
@@ -111,13 +116,12 @@ router.post('/members/:id', jwtAuth, (req,res) => {
         {$push: {members:req.user.id}},
         {new: true}
     )
-    .populate({
-        path: 'members', 
-        select: 'username _id' 
-    })
     .then(newGroup => {
-        console.log(newGroup)
-        res.status(201).json(newGroup)
+        PopulateGroup()
+        .then(updatedGroups => {
+        console.log(updatedGroups)
+        res.status(200).json(updatedGroups)
+        })
     })
     .catch(err => {
         console.error(err);
@@ -133,10 +137,13 @@ router.delete('/members/:id', jwtAuth, (req,res) => {
             {$pull: {members: req.user.id}},
             {new:true}
         )
-        .then(members => {
-            console.log(members)
-            res.status(204).end();
-        }) 
+        .then(newGroup => {
+            PopulateGroup()
+            .then(updatedGroups => {
+            console.log(updatedGroups)
+            res.status(200).json(updatedGroups)
+            })
+        })
         .catch(err => {
             console.error(err);
             res.status(500).json({ message: 'Internal server error' });

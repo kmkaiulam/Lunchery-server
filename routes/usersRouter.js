@@ -81,14 +81,14 @@ router.put('/:id', jwtAuth, (req, res) => {
   })
 });
 
-//Profile Image Update                      profileImgUpload.single('profileImage)
+//Profile Image Update                    
 router.put('/profileImage/:id', jwtAuth, uploader.profileImage, (req, res ) => {
   const userId = req.user.id
   return User.findById(userId)
   .then(user => {
     let profileImageLink = user.chefProfile.profileImage;
    
-    if (user.chefProfile.profileImage !== 'default-user-image.png') {
+    if (user.chefProfile.profileImage !== 'user-images/profileImage-default-user-image.png') {
     AWS.config.update({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
