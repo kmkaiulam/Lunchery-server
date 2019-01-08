@@ -72,7 +72,6 @@ router.put('/:id', jwtAuth, (req, res) => {
   })
   User.findByIdAndUpdate(id, {$set: toUpdate}, {new:true})
   .then(user => {
-    console.log(user.serialize());
     res.status(200).json(user)
   })
   .catch(error => {

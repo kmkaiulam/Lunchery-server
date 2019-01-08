@@ -27,7 +27,6 @@ router.get('/', (req,res) => {
     Cleanup()
     PopulateGroup()
       .then(groups =>{
-        console.log(groups)
         res.json(groups)
       })
       .catch(err =>{
@@ -40,8 +39,6 @@ router.get('/', (req,res) => {
 //CREATE A GROUP
 router.post('/', jwtAuth, (req,res) => {
   let {lunchDate, lunchLocation, lunchTime, menu, cost, seatLimit, members} = req.body;
-  console.log(lunchDate)
-  console.log(req.user);
      Group.create({
        createdBy: req.user.id,
        lunchDate,
@@ -60,7 +57,6 @@ router.post('/', jwtAuth, (req,res) => {
         }) 
     })
     .then(group => {
-        console.log(group);
         return res.status(201).json(group);
     })
     .catch(err => {
@@ -72,6 +68,7 @@ router.post('/', jwtAuth, (req,res) => {
 
 //EDIT GROUP
 router.put('/:id', jwtAuth, (req, res) => {
+
     let id= req.params.id;;
     let toUpdate= {};
     const updateableFields = ['lunchDate', 'lunchLocation', 'lunchTime', 'menu', 'cost', 'seatLimit']
@@ -85,7 +82,6 @@ router.put('/:id', jwtAuth, (req, res) => {
     .then(groupUpdate => {
         PopulateGroup()
         .then(updatedGroups => {
-            console.log(updatedGroups)
             res.status(200).json(updatedGroups)
         })
     })
@@ -119,7 +115,6 @@ router.post('/members/:id', jwtAuth, (req,res) => {
     .then(newGroup => {
         PopulateGroup()
         .then(updatedGroups => {
-        console.log(updatedGroups)
         res.status(200).json(updatedGroups)
         })
     })
@@ -140,7 +135,6 @@ router.delete('/members/:id', jwtAuth, (req,res) => {
         .then(newGroup => {
             PopulateGroup()
             .then(updatedGroups => {
-            console.log(updatedGroups)
             res.status(200).json(updatedGroups)
             })
         })

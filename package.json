@@ -10,6 +10,7 @@
     "chai-http": "^4.2.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "faker": "^4.1.0",
     "jsonwebtoken": "^8.3.0",
     "mocha": "^5.2.0",
     "mongoose": "^5.2.14",
@@ -26,7 +27,7 @@
   "devDependencies": {},
   "scripts": {
     "reInstall": "rm -rf node_modules && rm -rf package-lock.json && npm install",
-    "test": "mocha",
+    "test": "mocha --exit --timeout 20000",
     "start": "node server.js"
   },
   "repository": {
