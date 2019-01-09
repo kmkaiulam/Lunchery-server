@@ -164,16 +164,7 @@ describe('Lunchery API resources', function(){
             });
         });
 
-        // it('should reject a user that is not registered', function(){
-        //     let agent = chai.request.agent(app)
-        //     let unregisteredUser = generateUserData();
-        //     return agent
-        //         .post('/api/auth/login')
-        //         .send({username: unregisteredUser.username , password: '123123'})
-        //         .then(function(res){
-        //             expect(res).to.have.status(401);
-        //     });
-        // });
+   
     });
 
 
