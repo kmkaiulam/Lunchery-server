@@ -26,13 +26,12 @@
   },
   "devDependencies": {},
   "scripts": {
-    "reInstall": "rm -rf node_modules && rm -rf package-lock.json && npm install",
     "test": "mocha --exit --timeout 20000",
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "\u0016https://github.com/kmlamthinkful/Lunchery-server.git"
+    "url": "git+https://github.com/kmkaiulam/Lunchery-server.git"
   },
   "author": "Kenneth Lam",
   "license": "ISC"
