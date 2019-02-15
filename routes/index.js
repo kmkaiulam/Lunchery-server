@@ -1,4 +1,7 @@
 'use strict';
+// --- IMPORTS --- 
 const {router: groupsRouter} = require('./groupsRouter'); 
 const {router: usersRouter} = require('./usersRouter');
-module.exports = {groupsRouter, usersRouter};
+const {router: authRouter} = require('./authRouter');
+
+module.exports = {groupsRouter, usersRouter, authRouter};

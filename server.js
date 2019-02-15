@@ -24,7 +24,8 @@ app.use(morgan('common'));
 // --- IMPORTS ---
 const {usersRouter} = require('./routes');
 const {groupsRouter} = require('./routes');
-const {authRouter, localStrategy, jwtStrategy } = require('./auth');
+const {authRouter} = require('./routes');
+const {localStrategy, jwtStrategy} = require('./middleware/auth');
 
 // --- CONFIG ---
 const { PORT, DATABASE_URL } = require('./config');
